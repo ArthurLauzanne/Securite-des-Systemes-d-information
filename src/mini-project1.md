@@ -1,76 +1,113 @@
-# Project Report 1: Fundamentals and Identification/Authentication
-**Author:** [Lauzanne_Arthur Ligneres_Romain]
+# Network Security Project: SSH Implementation and Hardening
 
-# Part 1A: Environment Setup (Kali Linux VM)
-[cite_start]The objective was to set up a secure laboratory environment[cite: 23, 24]. [cite_start]I chose the VirtualBox option for maximum isolation[cite: 26].
-
-* [cite_start]**OS:** Kali Linux 64-Bit[cite: 42].
-* [cite_start]**System Settings:** 4GB RAM and 30GB Disk[cite: 48, 53].
-* [cite_start]**Network:** Configured as "Internal Network" to isolate the lab from the internet[cite: 58, 114].
-
-> **[SCREENSHOT_01]**: Replace this with your VirtualBox running Kali.
+**Subject**: Workspace Setup and Initial Environment
+**Tools**: VirtualBox, Kali Linux (Client), Ubuntu (Server)
 
 ---
 
-# Part 1B: Password Policy Management (Complexity and Renewal)
+## Part 1A: Workspace Setup (VM Kali Linux)
+### 1. Objective
+The primary objective was to establish a secure and isolated laboratory environment using Kali Linux to understand fundamental security concepts, such as the CIA triad, and to practice identification and authentication mechanisms.
 
-## 1. Objective
-[cite_start]The goal of this section was to implement a robust password policy on the Kali Linux system to defend against brute-force and dictionary attacks[cite: 123, 133]. [cite_start]We configured strict complexity requirements and a mandatory renewal (aging) policy to ensure credential rotation[cite: 124, 138].
+### 2. Implementation
+* **Virtualization**: I utilized Oracle VM VirtualBox to host the infrastructure, ensuring maximum isolation from the host system.
+* **Machine Deployment**: I installed a Kali Linux VM as the "Attacker/Client" and an Ubuntu VM as the "Victim/Server".
+* **System Specs**: The Kali VM was configured with 4 GB of RAM and 30 GB of storage to ensure stable performance during labs.
+* **Networking**: Both VMs were connected via an "Internal Network" to allow inter-VM communication while preventing unauthorized external access.
 
----
+### 3. Verification
+* **Login**: Successfully performed the first boot and logged in with the created student account.
+* **Environment**: Confirmed the graphical interface and terminal were fully operational for the upcoming security tasks.
 
-## 2. Configuration of Complexity Rules
-[cite_start]We used the `pam_pwquality` module to enforce security standards[cite: 141, 143]. We modified the configuration file located at `/etc/security/pwquality.conf`[cite: 151].
-
-**Key Parameters Enforced:**
-* [cite_start]**minlen = 12**: Sets the minimum password length to 12 characters[cite: 158].
-* [cite_start]**minclass = 4**: Requires at least one character from each of the four classes (uppercase, lowercase, digits, and special characters)[cite: 160].
-* [cite_start]**ucredit, lcredit, dcredit, ocredit = -1**: Forces the presence of at least one character of each type[cite: 176, 177, 178, 179].
-* [cite_start]**maxrepeat = 3**: Prevents more than 3 consecutive identical characters[cite: 167].
-* [cite_start]**gecoscheck = 1**: Ensures the password does not contain personal information from the user's GECOS field[cite: 171].
-
-> **[INSERT image_ca70d5.png here]**
-> *Figure 1: Detailed configuration of complexity rules in /etc/security/pwquality.conf.*
+![Successful boot of Kali Linux](asset/mini-project1/Part1A_1.png)
 
 ---
 
-## 3. System Activation via PAM
-[cite_start]To ensure these rules are active during every password change, I verified the configuration in `/etc/pam.d/common-password`[cite: 186, 190]. 
+## Part 1B: Password Policy Implementation (Complexity and Renewal)
 
-[cite_start]The system was verified to include the following line before the standard Unix module[cite: 197]:
-`password requisite pam_pwquality.so retry=3`
+### 1. Objective
+The objective of this section was to implement a robust password policy on a Linux system by configuring complexity requirements and renewal rules to protect against brute-force and dictionary attacks.
 
-> **[INSERT image_ca70d9.png here]**
-> *Figure 2: Verification of the PAM stack activation for pwquality.*
+### 2. Theoretical Background
+* **Complexity**: A strong policy requires a minimum length and a mix of character types (uppercase, lowercase, digits, and special characters).
+* **PAM (Pluggable Authentication Modules)**: This modular system manages authentication in Linux. We specifically use the `pam_pwquality` module to enforce password strength rules.
+* **Expiration**: Forcing password changes limits the window of opportunity for an attacker using a compromised credential.
+
+### 3. Implementation Steps
+
+* **Step 1: Installation of pwquality Tools**
+I first updated the package repository and installed the necessary libraries for password quality management.
+![Updating package lists](asset/mini-project1/Part1B_1.png)
+![Installing libpwquality-tools and libpam-pwquality](asset/mini-project1/Part1B_2.png)
+![Installation verification](asset/mini-project1/Part1B_3.png)
+
+* **Step 2: Configuring Complexity Rules**
+I edited the `/etc/security/pwquality.conf` file to define the global policy:
+  * `minlen = 12`: Minimum length of 12 characters.
+  * `minclass = 4`: Requires four classes of characters.
+  * `ucredit, lcredit, dcredit, ocredit = -1`: Requires at least one uppercase, one lowercase, one digit, and one special character.
+![Modifying pwquality.conf with nano](asset/mini-project1/Part1B_4.png)
+
+* **Step 3: Integration with PAM**
+To apply these rules during password changes, I modified `/etc/pam.d/common-password` to include the `pam_pwquality.so` module with a retry limit of 3.
+![Configuring PAM common-password file](asset/mini-project1/Part1B_5.png)
+
+* **Step 4: Configuring Password Expiration (Aging)**
+I modified the `/etc/login.defs` file to set the default expiration for new users to 90 days (`PASS_MAX_DAYS 90`).
+![Modifying login.defs for default aging](asset/mini-project1/Part1B_6.png)
+![Verification of aging parameters](asset/mini-project1/Part1B_7.png)
+
+### 4. Testing the Policy
+I performed various tests to ensure the policy was active:
+* **Failure Tests**: I attempted to set passwords that were too short or lacked required character classes. The system correctly returned "BAD PASSWORD" errors.
+* **Success Test**: I successfully updated the password only when all complexity requirements were met.
+![Testing password constraints and successful update](asset/mini-project1/Part1B_8.png)
+
+### 5. Forced Expiration for Existing Users
+Finally, I used the `chage` command to force an immediate password reset for the user, verifying that the system prompts for a change upon the next login attempt.
+![Forcing immediate password expiration](asset/mini-project1/Part1B_9.png)
+
+And here, when I try to reconnect for the first time :
+![Reconnexion needing password reset](asset/mini-project1/Part1B_10.png)
 
 ---
 
-## 4. Password Expiration Policy (Aging)
-[cite_start]To limit the lifespan of potentially compromised credentials, I implemented a 90-day rotation policy[cite: 138, 247].
+## Part 1C: SSH Key-Based Authentication and Hardening
 
-* [cite_start]**Global Policy**: I updated the `PASS_MAX_DAYS` parameter in `/etc/login.defs` to **90**[cite: 250, 254].
-* **User Enforcement**: I applied this limit to the current 'kali' user using the command: `sudo chage -M 90 kali`[cite: 258, 264].
+### 1. Objective
+The goal of this section was to secure SSH access by implementing public-key authentication and disabling password-based logins. Key-based authentication is significantly more robust against brute-force and dictionary attacks than traditional passwords.
 
-> **[INSERT image_ca7382.png here]**
-> *Figure 3: Using the 'chage -l' command to confirm the 90-day aging limit.*
+### 2. Prerequisites
+* **Client**: Kali Linux machine.
+* **Server**: Ubuntu machine.
+* **Connectivity**: Both VMs must be able to communicate over the internal network.
+
+### 3. Implementation Steps
+
+* **Step 1: Generating the SSH Key Pair**
+On the Kali Linux client, I generated a secure asymmetric key pair using the Ed25519 algorithm. I also set a passphrase to protect the private key in case of local compromise.
+![Generating Ed25519 key pair on Kali](asset/mini-project1/Part1C_1.png)
+
+* **Step 2: Identifying the Target Server**
+I verified the IP address of the Ubuntu server to ensure correct delivery of the public key. The server's IP was identified as `192.168.56.102`.
+![Verifying Ubuntu IP address with 'ip a'](asset/mini-project1/Part1C_2.png)
+
+* **Step 3: Deploying the Public Key**
+I transferred the public key to the Ubuntu server using the `ssh-copy-id` command. This automatically adds the key to the `~/.ssh/authorized_keys` file on the target.
+![Deploying public key with ssh-copy-id](asset/mini-project1/Part1C_3.png)
+
+* **Step 4: Testing Key-Based Login**
+I initiated an SSH session from Kali. The system successfully requested the passphrase for the private key instead of the user password, granting access to the Ubuntu shell.
+![Successful SSH connection using the key pair](asset/mini-project1/Part1C_4.png)
+
+* **Step 5: Disabling Password Authentication (Hardening)**
+To complete the hardening process, I modified the SSH daemon configuration on the Ubuntu server. I edited `/etc/ssh/sshd_config` to set `PasswordAuthentication no`.
+![Welcome message upon SSH login](asset/mini-project1/Part1C_5.png)
+
+### 4. Final Security Validation
+To verify the hardening, I performed two final tests:
+* **Negative Test**: Attempted to force a password login. The server correctly rejected the attempt with `Permission denied (publickey)`.
+* **Positive Test**: Logged in again using the SSH key, which remains the only authorized access method.
+![Disabling PasswordAuthentication in sshd_config](asset/mini-project1/Part1C_6.png)
 
 ---
-
-## 5. Security Validation & Testing
-[cite_start]I performed manual tests to verify the effectiveness of the new policy[cite: 268].
-
-* **Complexity Test**: I attempted to set weak passwords (too short, or missing character classes). [cite_start]The system successfully rejected these attempts[cite: 272, 274].
-* **Expiration Test**: I used `sudo chage -d 0 kali` to force immediate expiration[cite: 281, 282]. Upon the next login attempt, the system prompted for a mandatory password change[cite: 284].
-
-> **[INSERT image_ca7387.png here]**
-> *Figure 4: Terminal logs showing system rejection of weak passwords and successful update of a complex password.*
-
-> **[INSERT image_ca73c0.png here]**
-> *Figure 5: Forced password change prompt at login after setting age to 0.*
-
----
-
-## 6. Troubleshooting
-During the setup, I encountered a **DNS resolution error** (`Temporary failure resolving 'http.kali.org'`) while trying to install the `libpam-pwquality` package.
-* [cite_start]**Issue**: The VM was initially in "Internal Network" mode, which isolates it from the internet[cite: 114].
-* **Resolution**: I temporarily switched the VirtualBox network adapter to **NAT mode** to allow internet access for package installation, then successfully proceeded with the configuration.

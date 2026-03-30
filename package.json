@@ -1,0 +1,25 @@
+{
+  "name": "securite-des-systemes-d-information",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurLauzanne/Securite-des-Systemes-d-information.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArthurLauzanne/Securite-des-Systemes-d-information/issues"
+  },
+  "homepage": "https://github.com/ArthurLauzanne/Securite-des-Systemes-d-information#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  }
+}

@@ -39,7 +39,9 @@ The objective of this section was to implement a robust password policy on a Lin
 I first updated the package repository and installed the necessary libraries for password quality management.
 
 ![Updating package lists](asset/Part1B_1.png)
+
 ![Installing libpwquality-tools and libpam-pwquality](asset/Part1B_2.png)
+
 ![Installation verification](asset/Part1B_3.png)
 
 * **Step 2: Configuring Complexity Rules**
@@ -59,6 +61,7 @@ To apply these rules during password changes, I modified `/etc/pam.d/common-pass
 I modified the `/etc/login.defs` file to set the default expiration for new users to 90 days (`PASS_MAX_DAYS 90`).
 
 ![Modifying login.defs for default aging](asset/Part1B_6.png)
+
 ![Verification of aging parameters](asset/Part1B_7.png)
 
 ### 4. Testing the Policy
@@ -235,7 +238,7 @@ After completing the tests, I learned how to reset the `iptables` configuration 
   1. `sudo iptables -F`: Flushes all rules in the current chains.
   2. `sudo iptables -X`: Deletes any user-defined chains.
   3. `sudo iptables -P INPUT ACCEPT`: Resets the default policy to allow all traffic.
-  
+
 ![Resetting iptables to default state](asset/Part1E_6.png)
 
 ### 4. Default Policy Analysis (Going Further)

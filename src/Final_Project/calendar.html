@@ -927,6 +927,30 @@
             </span>
     </div></div></div>
                             
+
+    <hr style="margin-top: 40px;">
+
+<div style="background-color: #ffeeba; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+    <h3>📝 Espace de discussion (Visible par tous les élèves)</h3>
+    <form action="/add-comment" method="POST">
+        <input type="text" name="comment" placeholder="Laissez un avis sur le cours..." style="width: 70%; padding: 10px;">
+        <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer;">Envoyer</button>
+    </form>
+    
+    <div id="comments-section" style="margin-top: 15px; background: white; padding: 10px; border: 1px dashed #ccc;">
+        REMPLACEMENT_COMMENTAIRES
+    </div>
+</div>
+
+<div style="background-color: #e2e3e5; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+    <h3>📂 Ressources du cours</h3>
+    <p>Téléchargez le programme de l'année au format PDF :</p>
+    <a href="/download?file=syllabus.pdf" style="display: inline-block; padding: 10px 15px; background-color: #17a2b8; color: white; text-decoration: none; border-radius: 3px;">📥 Télécharger le Syllabus</a>
+</div>
+
+<div style="text-align: right; padding: 20px;">
+    <a href="/admin" style="color: red; font-weight: bold; text-decoration: none;">⚙️ Espace Professeur (Accès Restreint)</a>
+</div>
                             
 
                         </div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration Moodle</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #343a40; color: white; padding: 40px; }
+        .container { max-width: 800px; margin: auto; background: #495057; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .danger-zone { border: 2px solid #dc3545; padding: 20px; margin-top: 20px; border-radius: 5px; }
+        button { padding: 10px 15px; border: none; cursor: pointer; color: white; border-radius: 5px; }
+        input[type="text"] { padding: 10px; width: 60%; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #ffc107;">⚙️ Panneau d'Administration (Professeurs uniquement)</h1>
+        <p>Bienvenue dans l'espace de gestion. Attention, les actions ici sont irréversibles.</p>
+
+        <div style="background: #6c757d; padding: 20px; margin-top: 20px; border-radius: 5px;">
+            <h3>📡 Outil de Diagnostic Réseau</h3>
+            <p>Vérifiez si un serveur étudiant est en ligne (Ping) :</p>
+            <form action="/ping" method="POST">
+                <input type="text" name="ip" placeholder="Ex: 127.0.0.1 ou google.com">
+                <button type="submit" style="background-color: #007bff;">Lancer le Ping</button>
+            </form>
+            <div style="margin-top: 15px; font-family: monospace; background: black; padding: 10px; color: #0f0;">
+                REMPLACEMENT_PING
+            </div>
+        </div>
+
+        <div class="danger-zone">
+            <h3 style="color: #dc3545;">⚠️ Zone Dangereuse</h3>
+            <p>Bouton d'urgence pour réinitialiser la plateforme Moodle :</p>
+            <a href="/delete-all" style="display: inline-block; padding: 10px 15px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 3px;">🗑️ Supprimer TOUS les cours</a>
+        </div>
+        
+        <br>
+        <a href="/calendar" style="color: #17a2b8;">Retour au calendrier</a>
+    </div>
+</body>
+</html>

@@ -1,5 +1,4 @@
 # Network Security Project: SSH Implementation and Hardening
-
 **Subject**: Workspace Setup and Initial Environment
 **Tools**: VirtualBox, Kali Linux (Client), Ubuntu (Server)
 

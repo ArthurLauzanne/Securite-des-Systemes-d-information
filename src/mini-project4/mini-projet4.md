@@ -350,14 +350,14 @@ dirb a testé **4612 chemins** et trouvé **8 ressources accessibles** :
 
 | Ressource | Code | Criticité | Description |
 |---|---|---|---|
-| `/.bash_history` | 200 | 🔴 Critique | Historique des commandes — peut contenir des mots de passe |
-| `/.bashrc` | 200 | 🟡 Moyen | Configuration shell de l'utilisateur |
-| `/.profile` | 200 | 🟡 Moyen | Variables d'environnement |
-| `/.ssh` | 301 | 🔴 Critique | Dossier SSH — peut contenir des clés privées |
-| `/.cache` | 301 | 🟢 Faible | Cache utilisateur |
-| `/.config` | 301 | 🟡 Moyen | Fichiers de configuration |
-| `/Documents` | 301 | 🟢 Faible | Dossier documents personnel |
-| `/Images` | 301 | 🟢 Faible | Dossier images personnel |
+| `/.bash_history` | 200 |  Critique | Historique des commandes — peut contenir des mots de passe |
+| `/.bashrc` | 200 | Moyen | Configuration shell de l'utilisateur |
+| `/.profile` | 200 |  Moyen | Variables d'environnement |
+| `/.ssh` | 301 |  Critique | Dossier SSH — peut contenir des clés privées |
+| `/.cache` | 301 |  Faible | Cache utilisateur |
+| `/.config` | 301 |  Moyen | Fichiers de configuration |
+| `/Documents` | 301 |  Faible | Dossier documents personnel |
+| `/Images` | 301 |  Faible | Dossier images personnel |
 
 **Vulnérabilité identifiée :** Le serveur `python3 -m http.server` expose tout le répertoire home de l'utilisateur sans authentification.
 
@@ -378,10 +378,10 @@ Un test d'intrusion (pentest) est un exercice de sécurité **autorisé et léga
 
 | | Pentest | Hacking |
 |---|---|---|
-| Autorisation | ✅ Autorisé par le propriétaire | ❌ Non autorisé |
-| Légalité | ✅ Légal | ❌ Illégal |
+| Autorisation |  Autorisé par le propriétaire |  Non autorisé |
+| Légalité |  Légal |  Illégal |
 | Objectif | Améliorer la sécurité | Nuire / voler |
-| Rapport | ✅ Rapport fourni au client | ❌ Aucun |
+| Rapport |  Rapport fourni au client |  Aucun |
 
 ---
 
